@@ -1,0 +1,101 @@
+---
+collections:
+  # Derivation which produces a structured roll-up of current thread content.
+  estuary/ai-poc/slack-threads-v20230601:
+    schema: slack-threads-v20230601.schema.yaml
+    key:
+      - /channel_id
+      - /thread_id
+    derive:
+      using:
+        sqlite:
+          migrations:
+            - slack-threads-v20230601.migration.0.sql
+      transforms:
+        - name: indexUsers
+          source: estuary/mahdi-ss/users
+          shuffle: any
+          lambda: |
+            -- Index user metadata on ID.
+            insert into users (
+              user_id,
+              is_bot,
+              user_name
+            ) values (
+              $id,
+              $is_bot,
+              $profile$real_name_normalized
+            ) on conflict do update set
+                is_bot = excluded.is_bot,
+                user_name = excluded.user_name;
+        - name: indexChannels
+          source: estuary/mahdi-ss/channels
+          shuffle: any
+          lambda: |
+            -- Index channel metadata on ID.
+            insert into channels (
+              channel_id,
+              channel_name,
+              num_members,
+              purpose,
+              topic
+            ) values (
+              $id,
+              $name_normalized,
+              $num_members,
+              $purpose$value,
+              $topic$value
+            ) on conflict do update set
+              channel_name = excluded.channel_name,
+              num_members = excluded.num_members,
+              purpose = excluded.purpose,
+              topic = excluded.topic;
+        - name: channelMessages
+          source: estuary/mahdi-ss/channel_messages
+          shuffle: any
+          lambda: slack-threads-v20230601.onMessage.sql
+        - name: threadMessages
+          source: estuary/mahdi-ss/threads
+          shuffle: any
+          lambda: slack-threads-v20230601.onMessage.sql
+
+  # Derivation which renders a text-string rollup of the thread
+  # and prompts GPT for a summarization completion.
+  estuary/ai-poc/thread-summaries-v20230601:
+    schema: thread-summaries-v20230601.schema.yaml
+    key:
+      - /thread_id
+      - /channel_id
+    projections:
+      completion_content: /completion/choices/0/message/content
+    derive:
+      using:
+        typescript:
+          module: thread-summaries-v20230601.ts
+      transforms:
+        - name: fromThreads
+          source: estuary/ai-poc/slack-threads-v20230601
+          shuffle: any
+
+materializations:
+  # Materialization of thread-summaries into a Google Sheet.
+  estuary/ai-poc/thread-summaries-sheet:
+    endpoint:
+      connector:
+        image: "ghcr.io/estuary/materialize-google-sheets:v2"
+        config: thread-summaries-sheet.config.yaml
+    bindings:
+      - resource:
+          sheet: threads-v20230605
+        source: estuary/ai-poc/thread-summaries-v20230601
+        fields:
+          include:
+            channel_id: {}
+            channel_name: {}
+            completion/created: {}
+            completion/model: {}
+            completion/usage/total_tokens: {}
+            completion_content: {}
+            error: {}
+            thread_id: {}
+          recommended: false

@@ -1,0 +1,21 @@
+---
+credentials:
+  auth_type: Client
+  client_id_sops: "ENC[AES256_GCM,data:FWaeepW7MWY+m5CzhpyOFlPj12NtDXXlX+fDBOYPFZuEYmzBdTuL0pNMVLdNbR8Ioqx1MyIiaR9SEcnl7XFvr2xHiea5fCFT,iv:AkAWXZlkwPx7tI1QM6Y4w+zu5PC0hfMmLi9glco8Ba4=,tag:zdaMgZ0mGg5YiTOZZEhplw==,type:str]"
+  client_secret_sops: "ENC[AES256_GCM,data:nxrx1Enpe0Q94OpwbEG4dxwrkDV8Bd/dV3Z/ghpOj6J7kcg=,iv:trDNrXAcoHhXcMYn1K029BwweDK8VJ578RU8m3e/Sq8=,tag:KLkLQDqmKJjFvGVlosJ2NQ==,type:str]"
+  refresh_token_sops: "ENC[AES256_GCM,data:xjJPv5XHQ6cn/89X3HWuzHOnUTr+RieLvmIovALjGek0+w3DkLlUDAJhDDMR6ICeB98a7JZMWB49M9ethOCQfzOXNaS4UxfKpPXtVWpK96n/XJWq6aEFFPNDZZaTE+FovVvUwv6Xzg==,iv:VBtwtjGm5Fq90N+1tklKriKrVjBYsHbc79lWO2xeU7Y=,tag:Cvm2qjZ4FZwLTIfXZoSV8Q==,type:str]"
+spreadsheetUrl: "https://docs.google.com/spreadsheets/d/1OThBsgO9UOkiLR7MzqRYfVnFOUKT9bIZiaB8tCRtcxQ/edit#gid=0"
+sops:
+  kms: ~
+  gcp_kms:
+    - resource_id: projects/helpful-kingdom-273219/locations/us-central1/keyRings/catalog-sops/cryptoKeys/config-encryptor
+      created_at: "2023-06-06T04:12:40Z"
+      enc: CiQABM8p++KVtb6v0ncn27ZYH5VRG893LlnPT7n2ALAOwAW8ucASSQDKhcRjDN2zsIYEI6RALGEjsryh/zDfcLCR4wDQOla0rc/GCi1aicTQcSU9id+YqaFBTiZ766iEkPudXXRqLWIKOyj+IR49kh0=
+  azure_kv: ~
+  hc_vault: ~
+  age: ~
+  lastmodified: "2023-06-06T04:12:40Z"
+  mac: "ENC[AES256_GCM,data:oHUTRL34mHHciIjCyneAXWXDCnFr1rzKZjLJ8nORqRCN9My9StOdXtXh30hJbL7SFCE+0goUEj69xNDwrzwTDEiYZ99xLSP0RSH6rpJ6mBsNNNo4nFpnhIyfEmkk5Fjt3SFly2Pi3ykZNAcoCZC48w0wHFBUZ3OPm01F51l4d34=,iv:9zl9qhyW0jVMMrKGWHuk6Rj3RipJzGeDIS8CMHxepv0=,tag:ODpCSPbQdeugn0ixQzQnqQ==,type:str]"
+  pgp: ~
+  encrypted_suffix: _sops
+  version: 3.7.3

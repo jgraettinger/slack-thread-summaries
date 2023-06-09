@@ -1,0 +1,73 @@
+properties:
+  channel_id:
+    type: string
+  channel_name:
+    type:
+      - string
+      - "null"
+  completion:
+    properties:
+      choices:
+        items:
+          properties:
+            finish_reason:
+              type: string
+            index:
+              type: integer
+            message:
+              properties:
+                content:
+                  type: string
+                role:
+                  type: string
+              type: object
+          type: object
+        minItems: 1
+        type: array
+      created:
+        type: integer
+      id:
+        type: string
+      model:
+        type: string
+      object:
+        type: string
+      usage:
+        properties:
+          completion_tokens:
+            type: integer
+          prompt_tokens:
+            type: integer
+          total_tokens:
+            type: integer
+        type: object
+    type: object
+  end_ts:
+    type: number
+  error:
+    type: string
+  msg_count:
+    type: integer
+  rollup:
+    type: string
+  start_ts:
+    type: number
+  thread:
+    items:
+      properties:
+        text:
+          type: string
+        ts:
+          type: number
+        user_id:
+          type: string
+        user_name:
+          type:
+            - "null"
+            - string
+      type: object
+    type: array
+  thread_id:
+    format: number
+    type: string
+type: object

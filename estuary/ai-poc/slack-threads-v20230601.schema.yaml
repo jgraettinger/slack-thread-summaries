@@ -1,0 +1,44 @@
+properties:
+  channel_id:
+    type: string
+  channel_name:
+    type:
+      - string
+      - "null"
+  end_ts:
+    type: number
+  msg_count:
+    type: integer
+  start_ts:
+    type: number
+  thread:
+    items:
+      properties:
+        text:
+          type: string
+        ts:
+          type: number
+        user_id:
+          type: string
+        user_name:
+          type:
+            - string
+            - "null"
+      required:
+        - text
+        - ts
+        - user_id
+        - user_name
+      type: object
+    type: array
+  thread_id:
+    type: string
+required:
+  - channel_id
+  - channel_name
+  - end_ts
+  - msg_count
+  - start_ts
+  - thread_id
+  - thread
+type: object
